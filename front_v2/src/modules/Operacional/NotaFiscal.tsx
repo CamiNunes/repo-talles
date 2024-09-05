@@ -50,6 +50,7 @@ type FormData = {
 	CodLoja?: string;
 	NrNotaFiscal?: string;
 	CodServico?: string;
+	ServicoDescricao?: string;
 	QtItemNotaFiscal?: string;
 	VlServicoItemNotaFiscal?: string;
 	VlItemNotaFiscal?: string;
@@ -67,6 +68,7 @@ type FormDataError = {
 	CodLoja?: string;
 	NrNotaFiscal?: string;
 	CodServico?: string;
+	ServicoDescricao?: string;
 	QtItemNotaFiscal?: string;
 	VlServicoItemNotaFiscal?: string;
 	VlItemNotaFiscal?: string;
@@ -342,6 +344,8 @@ const NotaFiscal = () => {
 									setFormData({
 										...item,
 										Itens: itemsWithId,
+										CodServico: itemsWithId[0]?.CodServico, // Armazenar o código do serviço no formData
+										ServicoDescricao: itemsWithId[0]?.ServicoDescricao, // Armazenar a descrição do serviço no formData
 									});
 									setItensEdit(itemsWithId);
 									setSearchModal({
@@ -555,6 +559,7 @@ const NotaFiscal = () => {
 							const gridDataItem = {
 								id: crypto.randomUUID(), // Garante que o `id` é único
 								CodServico: formData?.CodServico,
+								ServicoDescricao: formData?.ServicoDescricao,
 								VlServicoItemNotaFiscal: formData?.VlServicoItemNotaFiscal,
 								QtItemNotaFiscal: formData?.QtItemNotaFiscal,
 								VlItemNotaFiscal: formData?.VlItemNotaFiscal,
@@ -568,6 +573,7 @@ const NotaFiscal = () => {
 								...prevFormData,
 								Itens: gridData,
 								CodServico: undefined,
+								ServicoDescricao: undefined,
 								VlServicoItemNotaFiscal: undefined,
 								QtItemNotaFiscal: undefined,
 								VlItemNotaFiscal: undefined,
