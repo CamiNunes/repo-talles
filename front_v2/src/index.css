@@ -1,0 +1,61 @@
+@font-face {
+  font-family: 'Ubunto';
+  src: local('Ubunto'), url(../fonts/Ubunto/Ubuntu-Light.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Ubunto';
+  font-weight: 400;
+  src: local('Ubunto'), url(../fonts/Ubunto/Ubuntu-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Ubunto';
+  font-weight: 800;
+  src: local('Ubunto'), url(../fonts/Ubunto/Ubuntu-Bold.ttf) format('truetype');
+}
+
+
+main, html, body {
+  margin: 0;
+  font-family: 'sans-serif','Segoe UI', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #aaa;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #555;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #333;
+  cursor: pointer;
+}
+
+.MuiTablePagination-selectLabel,
+.MuiTablePagination-displayedRows,
+.MuiDataGrid-columnHeaderTitle,
+.MuiDataGrid-row,
+.MuiButtonBase-root {
+	font-family: 'sans-serif', 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+		'Droid Sans', 'Helvetica Neue', sans-serif !important;
+	--unstable_DataGrid-radius: none;
+}
+
+.MuiDataGrid-columnHeadersInner {
+	background: #dff2f1 !important;
+}
+
+.css-1usso8h-MuiDataGrid-root {
+	--unstable_DataGrid-radius: none !important;
+}
