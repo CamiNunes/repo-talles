@@ -86,6 +86,7 @@ const NotaFiscal = () => {
 	const [hideFields, setHideFields] = useState<any>({});
 	const [disableFields, setDisableFields] = useState<any>({});
 	const [vlServicoItem, setVlServicoItem] = useState<any>();
+	const [servicoDescricaoSelecionada, setServicoDescricaoSelecionada] = useState('');
 
 	const _dbgraficaoperacionalRepository = new dbgraficaoperacionalRepository();
 	const _dbgraficacomercialRepository = new dbgraficacomercialRepository();
@@ -104,18 +105,37 @@ const NotaFiscal = () => {
 
 	const handleServiceSelect = async (selectedService: any) => {
 		const servico = await _dbgraficasistemaRepository.ODataServico(
-			`?$filter=Id eq ${selectedService}&$select=vlServico`,
+			`?$filter=Id eq ${selectedService}&$select=VlServico,DsServico`,
 		);
 
-		const vlServico = servico.length > 0 ? servico[0].VlServico : 0;
+		if (servico.length > 0) {
+			const {VlServico, DsServico} = servico[0];
 
-		setFormData({
-			...formData,
-			CodServico: selectedService,
-			VlServicoItemNotaFiscal: vlServico.toFixed(2),
-		});
+			// Atualizar o formData com os valores retornados
+			setFormData(prevFormData => ({
+				...prevFormData,
+				CodServico: selectedService,
+				VlServicoItemNotaFiscal: VlServico.toFixed(2),
+				ServicoDescricao: DsServico,
+			}));
 
-		setVlServicoItem(vlServico);
+			setVlServicoItem(VlServico);
+		}
+
+		// const vlServico = servico.length > 0 ? servico[0].VlServico : 0;
+		// setFormData(prevFormData => ({
+		// 	...prevFormData,
+		// 	CodServico: selectedService.Id, // Armazena o ID do serviço
+		// 	ServicoDescricao: DsServico, // Armazena a descrição do serviço
+		// 	VlServicoItemNotaFiscal: vlServico.toFixed(2) || '', // Mantém o valor unitário, se necessário
+		// 	QtItemNotaFiscal: prevFormData?.QtItemNotaFiscal || '', // Mantém a quantidade, se necessário
+		// 	VlItemNotaFiscal: prevFormData?.VlItemNotaFiscal || '', // Mantém o valor total, se necessário
+		// }));
+		// setFormData({
+		// 	...formData,
+		// 	CodServico: selectedService,
+		// 	VlServicoItemNotaFiscal: vlServico.toFixed(2),
+		// });
 	};
 
 	const handleCalculateVlTotal = (val: number) => {
@@ -332,6 +352,8 @@ const NotaFiscal = () => {
 										await _dbgraficaoperacionalRepository.ODataItemNotaFiscal(
 											filter,
 										);
+									// Atualiza o formData com o serviço selecionado
+									handleServiceSelect(item); // Atualiza formData com a descrição do serviço
 									// Mapear os itens para incluir o Id do serviço
 									const itemsWithId = itemNotaFiscalData.map(
 										(item: any, index: number) => ({
@@ -341,16 +363,14 @@ const NotaFiscal = () => {
 											id: item.Id || index,
 										}),
 									);
-									setFormData({
-										...item,
-										Itens: itemsWithId,
-										CodServico: itemsWithId[0]?.CodServico, // Armazenar o código do serviço no formData
-										ServicoDescricao: itemsWithId[0]?.ServicoDescricao, // Armazenar a descrição do serviço no formData
-									});
+									// Atualizar o estado com os dados da nota fiscal e os itens da grid
+									setFormData(prevFormData => ({
+										...prevFormData,
+										...item, // Atualiza os campos da nota fiscal
+										Itens: itemsWithId, // Atualiza a lista de itens
+									}));
 									setItensEdit(itemsWithId);
-									setSearchModal({
-										isShow: false,
-									});
+									setSearchModal({isShow: false});
 								} catch (e) {
 									console.error(
 										'Erro ao carregar itens da nota fiscal selecionada:',
